@@ -4,61 +4,314 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emperor Protocol</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
     <style>
         body {
-            font-family: "Courier New", Courier, monospace;
-            background-color: white;
-            color: black;
             margin: 0;
-            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
         }
-        h1 {
-            text-align: center;
+
+        canvas {
+            display: block;
         }
-        p {
-            line-height: 1.6;
+
+        header {
+            background-color: #000;
+            color: #02c96a;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0px 4px 15px rgba(2, 201, 106, 0.4);
         }
-        .tweet {
-            margin-bottom: 20px;
-            border-bottom: 1px solid black;
-            padding-bottom: 10px;
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
         }
-        a {
-            color: black;
+
+        nav a {
+            color: #02c96a;
             text-decoration: none;
+            margin: 0 1rem;
+            font-size: 1rem;
+            transition: color 0.3s ease;
         }
-        a:hover {
-            text-decoration: underline;
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        .main-container {
+            padding: 2rem;
+        }
+
+        .token-list {
+            margin-top: 2rem;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .token-list th, .token-list td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .token-list th {
+            color: #02c96a;
+            font-size: 1.1rem;
+        }
+
+        .token-list tr:hover {
+            background-color: #111;
+        }
+
+        footer {
+            background-color: #000;
+            color: #02c96a;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0px -4px 15px rgba(2, 201, 106, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            nav a {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
+<header>
     <h1>Emperor Protocol</h1>
-    <div class="tweet">
-        <p><strong><a href="https://x.com/emperorprotocol" target="_blank">@emperorprotocol</a></strong></p>
-        <p>We’re building a protocol on Abstract to support the secure data sharing needs between AI agents and humans for inference, training, and interpretability.</p>
-        <p>Some important design focuses:</p>
-        <ul>
-            <li>Own/Share/Sell/Lend your data</li>
-            <li>Augment AI agents</li>
-            <li>Ensure data is always kept secure throughout computation and training</li>
-        </ul>
-        <p>11:07 PM · Dec 29, 2024 · 5,702 Views</p>
-    </div>
-    <div class="tweet">
-        <p><strong><a href="https://x.com/emperorprotocol" target="_blank">@emperorprotocol</a></strong></p>
-        <p>We’ve spent a few years working on the encryption algorithm. We’re getting close to being able to handle fully encrypted computations on highly sensitive data. Overall, we hope this will soon be expanded into a marketplace where data can be exchanged in a safe and secure way.</p>
-        <p>11:44 PM · Dec 29, 2024</p>
-    </div>
-    <div class="tweet">
-        <p><strong><a href="https://x.com/emperorprotocol" target="_blank">@emperorprotocol</a></strong></p>
-        <p>As we get closer to this, we will look to the community of builders to expand functionality. As you can imagine there are plenty of use cases for fully encrypted computation. We will design the protocol with the community in mind, ensuring builders are rewarded and we continue.</p>
-        <p>11:44 PM · Dec 29, 2024</p>
-    </div>
-    <div class="tweet">
-        <p><strong><a href="https://x.com/emperorprotocol" target="_blank">@emperorprotocol</a></strong></p>
-        <p>Very excited for those developments… it’s going to be an awesome year for Abstract, looking forward to meeting others in the community! <strong><a href="https://x.com/AbstractChain" target="_blank">@AbstractChain</a></strong></p>
-        <p>11:44 PM · Dec 29, 2024</p>
-    </div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="https://x.com/emperorprotocol">Explore</a>
+        <a href="https://x.com/emperorprotocol">Contact</a>
+    </nav>
+</header>
+
+<!-- Three.js Canvas -->
+<div id="vector-space-container"></div>
+
+<div class="main-container">
+    <h2>Data Marketplace Analytics</h2>
+    <h4>Note: This is mock data</h4>
+    <table class="token-list">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Bytes Stored</th>
+                <th>Bytes Lent</th>
+                <th>Bytes Sold</th>
+                <th>Lending Volume (ETH)</th>
+                <th>Selling Volume (ETH)</th>
+                <th>Lended / Sold (USD)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>AI16z</td>
+                <td>1.2 TB</td>
+                <td>500 GB</td>
+                <td>300 GB</td>
+                <td>5</td>
+                <td>3</td>
+                <td>$9,000 / $5,400</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Turbo</td>
+                <td>950 GB</td>
+                <td>450 GB</td>
+                <td>250 GB</td>
+                <td>4.5</td>
+                <td>2.5</td>
+                <td>$8,100 / $4,500</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Luna by Virtuals</td>
+                <td>850 GB</td>
+                <td>400 GB</td>
+                <td>200 GB</td>
+                <td>4</td>
+                <td>2</td>
+                <td>$7,200 / $3,600</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Artificial Liquid Intelligence</td>
+                <td>750 GB</td>
+                <td>350 GB</td>
+                <td>150 GB</td>
+                <td>3.5</td>
+                <td>1.5</td>
+                <td>$6,300 / $2,700</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Goatseus Maximus</td>
+                <td>500 GB</td>
+                <td>200 GB</td>
+                <td>100 GB</td>
+                <td>2</td>
+                <td>1</td>
+                <td>$3,600 / $1,800</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>AgentFun.AI</td>
+                <td>414 GB</td>
+                <td>150 GB</td>
+                <td>75 GB</td>
+                <td>1.5</td>
+                <td>0.75</td>
+                <td>$2,700 / $1,350</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Act I The AI Prophecy</td>
+                <td>267 GB</td>
+                <td>100 GB</td>
+                <td>50 GB</td>
+                <td>1</td>
+                <td>0.5</td>
+                <td>$1,800 / $900</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>CorgiAI</td>
+                <td>243 GB</td>
+                <td>90 GB</td>
+                <td>45 GB</td>
+                <td>0.9</td>
+                <td>0.45</td>
+                <td>$1,620 / $810</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>Eliza</td>
+                <td>127 GB</td>
+                <td>50 GB</td>
+                <td>25 GB</td>
+                <td>0.5</td>
+                <td>0.25</td>
+                <td>$900 / $450</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Dasha</td>
+                <td>118 GB</td>
+                <td>45 GB</td>
+                <td>20 GB</td>
+                <td>0.45</td>
+                <td>0.2</td>
+                <td>$810 / $360</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    
+</div>
+
+<footer style="display: flex; justify-content: center; align-items: center; flex-direction: column; background-color: #000; color: #02c96a; padding: 1rem; position: fixed; bottom: 0; width: 100%; box-shadow: 0px -4px 15px rgba(2, 201, 106, 0.4);">
+    <p style="margin: 0; display: flex; align-items: center;">
+        &copy; 2024 Emperor Protocol. Built on Abstract 
+        <img src="https://pbs.twimg.com/profile_images/1816175731203862528/OCtFkZbn_400x400.jpg" alt="Abstract Icon" 
+             style="width: 20px; height: 20px; border-radius: 10px; margin-left: 5px;">
+    </p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('vector-space-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / (window.innerHeight / 2), 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight / 2);
+        container.appendChild(renderer.domElement);
+
+        const gridHelper = new THREE.GridHelper(30, 30, 0x00ff00, 0x333333);
+        scene.add(gridHelper);
+        const axesHelper = new THREE.AxesHelper(15);
+        scene.add(axesHelper);
+        const pointsGeometry = new THREE.BufferGeometry();
+        const pointsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05 });
+
+        const numPoints = 5000; 
+        const points = [];
+        const motionSpeeds = []; 
+        const bounds = 15; 
+
+        for (let i = 0; i < numPoints; i++) {
+            points.push(
+                Math.random() * bounds * 2 - bounds, // x
+                Math.random() * bounds * 2 - bounds, // y
+                Math.random() * bounds * 2 - bounds  // z
+            );
+            motionSpeeds.push(
+                Math.random() * 0.02 - 0.01, // Speed for x
+                Math.random() * 0.02 - 0.01, // Speed for y
+                Math.random() * 0.02 - 0.01  // Speed for z
+            );
+        }
+
+        const positionAttribute = new THREE.Float32BufferAttribute(points, 3);
+        pointsGeometry.setAttribute('position', positionAttribute);
+        const pointCloud = new THREE.Points(pointsGeometry, pointsMaterial);
+        scene.add(pointCloud);
+
+        camera.position.set(20, 20, 20);
+        camera.lookAt(0, 0, 0);
+
+        function animate() {
+            const positions = positionAttribute.array;
+
+            for (let i = 0; i < positions.length; i += 3) {
+                positions[i] += motionSpeeds[i];     // x
+                positions[i + 1] += motionSpeeds[i + 1]; // y
+                positions[i + 2] += motionSpeeds[i + 2]; // z
+
+                if (positions[i] > bounds || positions[i] < -bounds) motionSpeeds[i] *= -1;
+                if (positions[i + 1] > bounds || positions[i + 1] < -bounds) motionSpeeds[i + 1] *= -1;
+                if (positions[i + 2] > bounds || positions[i + 2] < -bounds) motionSpeeds[i + 2] *= -1;
+            }
+
+            positionAttribute.needsUpdate = true; 
+
+            camera.position.x = 25 * Math.sin(Date.now() * 0.0003);
+            camera.position.z = 25 * Math.cos(Date.now() * 0.0003);
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / (window.innerHeight / 2);
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight / 2);
+        });
+    });
+</script>
+
 </body>
 </html>
